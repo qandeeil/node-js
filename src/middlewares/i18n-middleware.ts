@@ -1,10 +1,9 @@
 import i18next from 'i18next';
 import Backend from 'i18next-fs-backend';
-import middleware from 'i18next-express-middleware';
+import middleware from 'i18next-http-middleware';
 import path from 'path';
 import fs from 'fs';
 import config from '../config';
-
 
 function getNamespaces(localePath: string): string[] {
   const files = fs.readdirSync(localePath);
