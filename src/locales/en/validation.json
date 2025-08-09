@@ -1,0 +1,13 @@
+{
+  "email": {
+    "string.email": "Invalid email address",
+    "any.required": "Email is required"
+  },
+  "name": {
+    "string.empty": "Name cannot be empty",
+    "any.required": "Name is required"
+  },
+  "age": {
+    "number.min": "Age must be at least {{limit}}"
+  }
+}
