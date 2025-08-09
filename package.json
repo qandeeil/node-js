@@ -8,7 +8,7 @@
     "build": "tsc && npm run copy-locales",
     "lint": "eslint . --ext .ts",
     "test": "jest",
-    "copy-locales": "xcopy src\\locales dist\\src\\locales /E /I /Y"
+    "copy-locales": "cpx \"src/locales/**/*\" dist/src/locales"
   },
   "dependencies": {
     "cors": "^2.8.5",
