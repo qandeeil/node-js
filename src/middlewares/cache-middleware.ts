@@ -1,9 +1,23 @@
-import { Request, Response, NextFunction } from 'express';
 import config from '../config';
-import redisClient from '../cache/redis-client';
+import crypto from 'crypto';
+import { Request, Response, NextFunction } from 'express';
 
 export async function cacheMiddleware(req: Request, res: Response, next: NextFunction) {
-  const key = `cache:${req.originalUrl}`;
+  if (!config.useCache) {
+    console.log("⚠️ Cache disabled — skipping cache check.");
+    return next();
+  }
+
+  const { default: Redis } = await import('ioredis');
+  const redisClient = new Redis(config.redisUrl);
+
+  const bodyString = req.body && Object.keys(req.body).length > 0
+    ? JSON.stringify(req.body)
+    : '';
+
+  const hash = crypto.createHash('md5').update(bodyString).digest('hex');
+  const key = `cache:${req.originalUrl}:${hash}`;
+
   try {
     const cachedData = await redisClient.get(key);
     if (cachedData) {

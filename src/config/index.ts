@@ -7,5 +7,6 @@ export default {
   redisUrl: process.env.REDIS_URL || "redis://localhost:6379",
   defaultLanguage: "en",
   cacheExpirationInMinutes: Number(process.env.CACHE_EXPIRATION_MINUTES) || 10,
-  useDatabase: process.env.USE_DATABASE === "true"
+  useDatabase: process.env.USE_DATABASE === "true",
+  useCache: process.env.USE_CACHE === "true"
 };
