@@ -9,16 +9,45 @@ import i18nMiddleware from "./src/middlewares/i18n-middleware";
 import { errorHandler } from "./src/middlewares/error-handler";
 import logger, { httpStream } from "./src/utils/logger";
 import redisClient from "./src/cache/redis-client";
+import requestId from "./src/middlewares/request-id";
+// import rateLimit from "express-rate-limit";
+import pagesRoutes from "./src/modules/pages/page-routes";
 
 const app = express();
 
-app.use(cors());
+// Request ID for traceability
+app.use(requestId);
+
+// Strict CORS using allowlist from env
+const corsOrigins = config.corsOrigins;
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true); // allow same-origin/non-browser
+      if (!corsOrigins.length) return callback(null, true); // allow all if not specified
+      return corsOrigins.includes(origin) ? callback(null, true) : callback(new Error("CORS not allowed"));
+    },
+    credentials: true,
+  })
+);
 app.use(helmet());
 app.use(express.json());
 app.use(morgan("combined", { stream: httpStream }));
 app.use(i18nMiddleware);
 
+// Basic rate limiter
+// app.use(
+//   rateLimit({
+//     windowMs: 15 * 60 * 1000,
+//     max: 100,
+//     standardHeaders: true,
+//     legacyHeaders: false,
+//   })
+// );
+
+
 app.use("/api/users", userRoutes);
+app.use("/api/pages", pagesRoutes);
 
 // Health check route
 app.get("/health", async (_req, res) => {

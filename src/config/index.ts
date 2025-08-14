@@ -12,4 +12,5 @@ export default {
   jwtSecret: process.env.JWT_SECRET || "dev_secret_change_me",
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || "1d",
   useRoles: process.env.USE_ROLES === "true", // default true; set to false to disable role checks
+  corsOrigins: (process.env.CORS_ORIGINS || "").split(",").map((s) => s.trim()).filter(Boolean),
 };

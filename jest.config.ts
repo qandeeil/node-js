@@ -6,6 +6,7 @@ const config: Config = {
   testMatch: ['**/?(*.)+(spec|test).[tj]s?(x)'],
   moduleFileExtensions: ['ts', 'js', 'json'],
   verbose: true,
+  testPathIgnorePatterns: ['/node_modules/', '/dist/'],
 };
 
 export default config;
